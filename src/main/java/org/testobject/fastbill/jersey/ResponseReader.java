@@ -1,27 +1,40 @@
 package org.testobject.fastbill.jersey;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-import com.google.common.base.Preconditions;
-import com.sun.jersey.api.client.ClientResponse;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.Response;
+
+import org.testobject.fastbill.service.FastbillErrorResponse;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ResponseReader {
 
-	private Map<String, Object> responseEntity;
+    private final ObjectMapper objectMapper;
 
-	@SuppressWarnings("unchecked")
-	public ResponseReader(ClientResponse response) {
-		Preconditions.checkState(response.getStatus() == 200);
+    public ResponseReader(final ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
-		Map<String, Object> entity = response.getEntity(Map.class);
-		responseEntity = (Map<String, Object>) entity.get("RESPONSE");
-		Object errors = responseEntity.get("ERRORS");
-		Preconditions.checkState(errors == null,  errors != null ? "request had erros " + errors.toString() : "no errors");
-	}
+    public <T> T readResponse(final Response response, final Class<T> clazz) throws FastbillErrorResponse {
+        final Map<String, Object> responseEntity = response.readEntity(new GenericType<Map<String, Object>>() {
+        });
 
-	@SuppressWarnings("unchecked")
-	public <T> T getData(String name) {
-		return (T) responseEntity.get(name);
-	}
+        final Object responseMap = responseEntity.get("RESPONSE");
+        if (responseMap != null) {
+            if (((Map<String, Object>) responseMap).containsKey("ERRORS")) {
+                throw new FastbillErrorResponse((List<String>) ((Map<String, Object>) responseMap).get("ERRORS"));
+            }
+        }
 
+        try {
+            final String responseString = this.objectMapper.writeValueAsString(responseEntity.get("RESPONSE"));
+            return this.objectMapper.readValue(responseString, clazz);
+        } catch (final IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }
