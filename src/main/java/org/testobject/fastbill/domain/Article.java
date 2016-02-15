@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Article {
 
-    private String articleNumber;// artikelnummer
+    private Long articleNumber;// artikelnummer
     private String title;//  titel
     private String description;//    beschreibung
     private String tags;//   artikel tags
@@ -64,11 +64,11 @@ public class Article {
         }
     }
 
-    public String getArticleNumber() {
+    public Long getArticleNumber() {
         return this.articleNumber;
     }
 
-    public void setArticleNumber(final String articleNumber) {
+    public void setArticleNumber(final Long articleNumber) {
         this.articleNumber = articleNumber;
     }
 
