@@ -14,6 +14,7 @@ import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.testobject.fastbill.jersey.EnsureJsonContentTypeFilter;
 import org.testobject.fastbill.jersey.ResponseReader;
+import org.testobject.fastbill.service.ArticleService;
 import org.testobject.fastbill.service.CustomerService;
 import org.testobject.fastbill.service.InvoiceService;
 import org.testobject.fastbill.service.ServiceBuilder;
@@ -115,6 +116,11 @@ public interface Fastbill {
                 public InvoiceService getInvoiceService() {
                     return new InvoiceService(serviceBuilder);
                 }
+
+                @Override
+                public ArticleService getArticleService() {
+                    return new ArticleService(serviceBuilder);
+                }
             };
         }
 
@@ -125,5 +131,7 @@ public interface Fastbill {
     public SubscriptionService getSubscriptionService();
 
     public InvoiceService getInvoiceService();
+
+    public ArticleService getArticleService();
 
 }
