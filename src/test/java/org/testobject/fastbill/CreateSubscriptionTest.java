@@ -61,7 +61,7 @@ public class CreateSubscriptionTest {
 
         final CreateSubscription subscription = new CreateSubscription();
         subscription.setCustomerId(this.customerId);
-        subscription.setArticleNumber("1");
+        subscription.setArticleNumber(1L);
 
         final CreatedSubscription createdSubscription = this.subscriptionService.create(subscription);
         Assert.assertNotNull(createdSubscription);

@@ -12,7 +12,7 @@ import java.util.List;
 public class CreateSubscription {
 
     private String subscriptionExtUid; //    bestimmtes abo mit vergebener id
-    private String articleNumber; //  required     artikelnummer
+    private Long articleNumber; //  required     artikelnummer
     private Long customerId; //  required    eine von fastbill vergebene bestimmte kundennummer
     private String coupon; //   coupon
     private String title; //   titel
@@ -122,11 +122,11 @@ public class CreateSubscription {
         this.subscriptionExtUid = subscriptionExtUid;
     }
 
-    public String getArticleNumber() {
+    public Long getArticleNumber() {
         return this.articleNumber;
     }
 
-    public void setArticleNumber(final String articleNumber) {
+    public void setArticleNumber(final Long articleNumber) {
         this.articleNumber = articleNumber;
     }
 
